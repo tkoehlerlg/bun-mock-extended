@@ -1,8 +1,7 @@
+import { jest } from 'bun:test';
 import { CalledWithMock } from './Mock';
 import { Matcher, MatchersOrLiterals } from './Matchers';
-import { jest } from '@jest/globals';
-import type { FunctionLike } from 'jest-mock';
-
+import type { FunctionLike } from './types';
 interface CalledWithStackItem<T extends FunctionLike> {
     args: MatchersOrLiterals<[...Parameters<T>]>;
     calledWithFn: jest.Mock<T>;

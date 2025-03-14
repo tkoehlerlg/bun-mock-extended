@@ -1,8 +1,8 @@
+import { describe, expect, jest, test } from 'bun:test';
 import mock, { mockClear, mockDeep, mockReset, mockFn, JestMockExtended } from './Mock';
 import { anyNumber } from './Matchers';
 import calledWithFn from './CalledWithFn';
 import { MockProxy } from './Mock';
-import { describe, expect, jest, test } from '@jest/globals';
 import { fail } from 'assert';
 
 interface MockInt {
@@ -86,7 +86,7 @@ export class Test6 {
     }
 }
 
-describe('jest-mock-extended', () => {
+describe('bun-mock-extended', () => {
     test('Can be assigned back to itself even when there are private parts', () => {
         // No TS errors here
         const mockObj: Test1 = mock<Test1>();
@@ -123,7 +123,7 @@ describe('jest-mock-extended', () => {
         const mockObj = mock<MockInt>();
         mockObj.getSomethingWithArgs.mockImplementation((arg1, arg2) => {
             return arg1 + arg2;
-        })
+        });
         expect(mockObj.getSomethingWithArgs(1, 2)).toBe(3);
     });
 
@@ -181,7 +181,7 @@ describe('jest-mock-extended', () => {
             someValue: undefined, // this is intentionally set to undefined
         });
 
-        expect(mockObj.someValue).toBe(undefined);
+        expect(mockObj.someValue).toBe(undefined as any);
     });
 
     test('Equals self', () => {
@@ -245,7 +245,7 @@ describe('jest-mock-extended', () => {
             expect(mockObj.getSomethingWithArgs(2, 2)).toBe(4);
             expect(mockObj.getSomethingWithArgs(1, 2)).toBe(3);
             expect(mockObj.getSomethingWithArgs(6, 2)).toBe(7);
-            expect(mockObj.getSomethingWithArgs(7, 2)).toBe(undefined);
+            expect(mockObj.getSomethingWithArgs(7, 2)).toBe(undefined as any);
         });
 
         test('supports overriding with same args', () => {
@@ -258,18 +258,14 @@ describe('jest-mock-extended', () => {
 
         test('Support jest matcher', () => {
             const mockObj = mock<MockInt>();
-            mockObj.getSomethingWithArgs
-                .calledWith(expect.anything(), expect.anything())
-                .mockReturnValue(3);
+            mockObj.getSomethingWithArgs.calledWith(expect.anything(), expect.anything()).mockReturnValue(3);
 
             expect(mockObj.getSomethingWithArgs(1, 2)).toBe(3);
         });
 
         test('Suport mix Matchers with literals and with jest matcher', () => {
             const mockObj = mock<MockInt>();
-            mockObj.getSomethingWithMoreArgs
-                .calledWith(anyNumber(), expect.anything(), 3)
-                .mockReturnValue(4);
+            mockObj.getSomethingWithMoreArgs.calledWith(anyNumber(), expect.anything(), 3).mockReturnValue(4);
 
             expect(mockObj.getSomethingWithMoreArgs(1, 2, 3)).toBe(4);
             expect(mockObj.getSomethingWithMoreArgs(1, 2, 4)).toBeUndefined;
@@ -502,7 +498,7 @@ describe('jest-mock-extended', () => {
             const promiseMockObj = Promise.resolve(mockObj);
             await promiseMockObj;
             await expect(promiseMockObj).resolves.toBeDefined();
-            await expect(promiseMockObj).resolves.toEqual(42);
+            await expect(promiseMockObj).resolves.toEqual(42 as any);
         });
     });
 
@@ -527,7 +523,7 @@ describe('jest-mock-extended', () => {
             mockObj.getSomethingWithArgs.calledWith(1, anyNumber()).mockReturnValue(3);
             expect(mockObj.getSomethingWithArgs(1, 2)).toBe(3);
             mockReset(mockObj);
-            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined);
+            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined as any);
             mockObj.getSomethingWithArgs.calledWith(1, anyNumber()).mockReturnValue(3);
             expect(mockObj.getSomethingWithArgs(1, 2)).toBe(3);
         });
@@ -548,7 +544,7 @@ describe('jest-mock-extended', () => {
             mockObj.deepProp.getNumber.calledWith(1).mockReturnValue(4);
             expect(mockObj.deepProp.getNumber(1)).toBe(4);
             mockReset(mockObj);
-            expect(mockObj.deepProp.getNumber(1)).toBe(undefined);
+            expect(mockObj.deepProp.getNumber(1)).toBe(undefined as any);
         });
 
         test('mockClear deep', () => {
@@ -567,7 +563,7 @@ describe('jest-mock-extended', () => {
             mockObj.someValue = undefined;
             mockObj.getSomethingWithArgs.calledWith(1, anyNumber()).mockReturnValue(3);
             mockReset(mockObj);
-            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined);
+            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined as any);
         });
 
         test('mockReset ignores null properties', () => {
@@ -575,7 +571,7 @@ describe('jest-mock-extended', () => {
             mockObj.someValue = null;
             mockObj.getSomethingWithArgs.calledWith(1, anyNumber()).mockReturnValue(3);
             mockReset(mockObj);
-            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined);
+            expect(mockObj.getSomethingWithArgs(1, 2)).toBe(undefined as any);
         });
 
         test('mockClear ignores undefined properties', () => {
