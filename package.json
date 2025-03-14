@@ -30,7 +30,7 @@
         "build": "tsc --skipLibCheck",
         "coveralls": "bun test --coverage && cat ./coverage/lcov.info | coveralls",
         "prepublishOnly": "bun run clean && bun run build && bun test",
-        "publish-package": "npm publish"
+        "publish-package": "bun publish"
     },
     "dependencies": {
         "ts-essentials": "^10.0.2"
